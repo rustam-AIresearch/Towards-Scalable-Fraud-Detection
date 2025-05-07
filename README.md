@@ -1,53 +1,54 @@
-Distributed SMOTE for Scalable Fraud Detection
-Overview
-This project explores the impact of distributed oversampling techniques on the performance, scalability, and computational efficiency of fraud detection models applied to large-scale, highly imbalanced datasets. Specifically, it evaluates and compares implementations of SMOTE (Synthetic Minority Oversampling Technique) in distributed environments.
+#  Distributed SMOTE for Scalable Fraud Detection
 
-The core problem addressed is the challenge of scaling nearest-neighbor-based SMOTE algorithms in distributed systems—an important concern when dealing with massive datasets like those used in credit card fraud detection.
+## Overview
 
-Problem Statement
-Fraud detection datasets are typically extremely imbalanced, with fraudulent transactions often representing less than 0.2% of total entries. This imbalance can bias classifiers, making them ineffective at identifying rare but critical cases.
+This project investigates the **impact of distributed oversampling techniques** on the performance, scalability, and computational efficiency of fraud detection models on large-scale, imbalanced datasets.
 
-The Credit Card Fraud Detection dataset used in this study includes 284,807 transactions over two days, of which only 492 are fraudulent. Standard classification algorithms struggle to detect these minority instances without oversampling.
+The focus is on improving fraud detection performance using different variants of **SMOTE (Synthetic Minority Oversampling Technique)**, which is known for mitigating class imbalance issues. However, its nearest-neighbor search poses scalability challenges in distributed systems.
 
-Goal
-To evaluate and compare different distributed SMOTE strategies in terms of:
+## Problem Statement
 
-Classification performance
+Fraud detection datasets are highly imbalanced. For example, the **Credit Card Fraud Detection** dataset used in this study contains:
 
-Execution (wall-clock) time
+-  **284,807 transactions**
+- **Only 492 (0.172%) are fraudulent**
 
-Scalability in distributed systems
+Without proper handling, machine learning classifiers tend to become **biased toward the majority class**, rendering them ineffective for real fraud detection tasks.
 
-Methods and Techniques
-Three distributed SMOTE variants are analyzed:
+##  Objective
 
-Global SMOTE
-Traditional SMOTE applied globally across the entire dataset.
+Evaluate the **trade-offs** between **classification accuracy**, **computational cost**, and **scalability** of various distributed SMOTE implementations, including:
 
-Partition-Based Local SMOTE
-SMOTE applied within clusters generated using:
+-  Global SMOTE
+-  Partition-Based SMOTE (K-Means, Bisecting K-Means)
+-  Approximate SMOTE using Locality-Sensitive Hashing (LSH)
 
-K-Means
+##  Methods
 
-Bisecting K-Means
+Three distributed SMOTE strategies were analyzed:
 
-Approximate SMOTE using Locality Sensitive Hashing (LSH)
-A faster, memory-efficient method that approximates nearest neighbors without full distance calculations.
+### 1. Global SMOTE
+> Applies SMOTE across the full dataset (baseline method).
 
-Each method is tested in conjunction with ensemble classifiers (e.g., Random Forest, XGBoost) to assess classification performance on distributed data.
+### 2. Partition-Based Local SMOTE
+> Partitions the minority class using:
+- **K-Means clustering**
+- **Bisecting K-Means clustering**
 
-Key Findings
-Partition-based SMOTE methods offer a significant improvement in classification accuracy for fraudulent transactions while maintaining fast execution times.
+SMOTE is applied locally within each cluster to enhance both **efficiency** and **cluster fidelity**.
 
-LSH-based approximate SMOTE reduces computational cost, providing an efficient balance between speed and accuracy.
+### 3. LSH-Based Approximate SMOTE
+> Uses **Locality Sensitive Hashing** to approximate nearest neighbors quickly, minimizing computational overhead in distributed environments.
 
-These findings highlight critical trade-offs between computational resources and model effectiveness for real-time or large-scale fraud detection systems.
+## Key Findings
 
-Technologies Used
-Apache Spark / PySpark (for distributed data processing)
+- **Partition-Based SMOTE** yields **higher accuracy** for fraudulent transaction detection and **lower execution time**.
+- **LSH-based SMOTE** reduces computational cost while maintaining competitive accuracy.
+- These results reveal **important trade-offs** between runtime performance and model effectiveness in big data fraud detection.
 
-Scikit-learn, XGBoost (for model training and evaluation)
+##  Research Question
 
-Pandas, NumPy (for preprocessing and analysis)
+> _What is the impact of traditional distributed oversampling techniques in combination with ensemble classifiers on the performance, scalability, and computational efficiency of fraud detection models in big data environments?_
 
-Matplotlib / Seaborn (for visualizations)
+
+
